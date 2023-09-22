@@ -18,7 +18,7 @@ def criar_perguntas(perguntas: PerguntasBase):
 
 
 @app.get("/perguntas", response_model=List[Perguntas])
-def read_heroes(limit: int = 100):
+def ler_perguntas(limit: int = 100):
     with Session(engine) as session:
         perguntas = session.exec(select(Perguntas).limit(limit)).all()
         return perguntas
@@ -35,7 +35,7 @@ def pergunta_por_categoria(categoria: str, limit: int = 100):
 
 
 @app.delete("/perguntas/{id}")
-def delete_hero(id: int):
+def deletar_pergunta_por_id(id: int):
     with Session(engine) as session:
         pergunta = session.get(Perguntas, id)
         if not pergunta:
@@ -46,13 +46,13 @@ def delete_hero(id: int):
 
 
 @app.patch("/perguntas/{id}", response_model=Perguntas)
-def update_hero(id: int, pergunta: PerguntasBase):
+def atualizar_pergunta_por_id(id: int, pergunta: PerguntasBase):
     with Session(engine) as session:
         db_perguntas = session.get(Perguntas, id)
         if not db_perguntas:
             raise HTTPException(status_code=404, detail="Hero not found")
-        hero_data = pergunta.dict(exclude_unset=True)
-        for key, value in hero_data.items():
+        pergunta_df = pergunta.dict(exclude_unset=True)
+        for key, value in pergunta_df.items():
             setattr(db_perguntas, key, value)
         session.add(db_perguntas)
         session.commit()
