@@ -50,7 +50,7 @@ def atualizar_pergunta_por_id(id: int, pergunta: PerguntasBase):
     with Session(engine) as session:
         db_perguntas = session.get(Perguntas, id)
         if not db_perguntas:
-            raise HTTPException(status_code=404, detail="Hero not found")
+            raise HTTPException(status_code=404, detail="ID não encontrado")
         pergunta_df = pergunta.dict(exclude_unset=True)
         for key, value in pergunta_df.items():
             setattr(db_perguntas, key, value)
